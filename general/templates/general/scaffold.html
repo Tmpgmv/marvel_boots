@@ -1,0 +1,28 @@
+{% extends 'general/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if object %}
+        Редактирование : {{ object.pk }}
+    {% else %}
+        Добавление 
+    {% endif %}
+{% endblock %}
+
+{% block h %}
+    {% if object %}
+        Редактирование : {{ object.pk }}
+    {% else %}
+        Добавление 
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<a class="btn attention mb-3" href="{% url 'home' %}">Назад</a>
+
+{% include 'general/form_with_confirmation.html' %}
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+

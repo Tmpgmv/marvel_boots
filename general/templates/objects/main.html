@@ -1,0 +1,35 @@
+{% load static %}
+{% load bootstrap_icons %}
+
+{% comment %}
+PREP См. комментарий к two_columns.html.
+
+Ипользование:
+
+{% include 'objects/main.html' %}
+
+{% endcomment %}
+
+<div style="grid-template-columns: 1fr 3fr 1fr;" class="d-grid mb-3 mt-3 {% if not user.is_superuser %}pb-3{% endif %} gap-3 position-relative attention-border {{ object.too_few }}">
+    <div class="p-2 ms-3 mt-3  d-flex justify-content-center align-items-center">
+        <img src="{{ object.photo.url }}" class="article-img" alt="img">
+    </div>
+    <div class="p-2 mt-3">
+        <p class="fw-bold text-center">{{ object.manufacturer }} | {{ object }}</p>
+        <p>{{ object.category }}</p>
+        <p>Количество: {{ object.get_amount }}</p>
+        <p>{{ object.ingredients }}</p>
+    </div>
+    <div class="p-2 me-3 mt-3  position-relative text-center">
+        <p>Цена <span class="badge text-bg-danger {{ object.get_price.class }}">Скидка</span></p>
+
+        <p>{{ object.get_price.price }}</p>
+
+        {% if user.is_superuser %}
+            {% comment %}<a class="btn del-button position-absolute z-3" href="{{ object.get_delete_url }}">{% bs_icon 'trash' %}</a>{% endcomment %}
+        {% endif %}
+    </div>
+    {% if user.is_superuser %}
+        <a href="{{ object.get_absolute_url }}" class="stretched-link"></a>
+    {% endif %}
+</div>

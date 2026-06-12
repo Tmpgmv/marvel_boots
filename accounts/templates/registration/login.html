@@ -1,0 +1,34 @@
+{% extends "general/base.html" %}
+
+{% block content %}
+
+    {% include "messages/messages.html" with type="error" messages=form.non_field_errors %}
+
+    <div class="container mt-5 d-flex justify-content-center align-items-center">
+        <div class="w-100" style="max-width: 400px;">  <!-- Wrapper for both forms -->
+            <form method="post" action="/accounts/login/">
+                {% csrf_token %}
+                <table class="table table-borderless mb-3 w-100">
+                    <tbody>
+                        <tr>
+                            <td><label for="username" class="form-label">Имя пользователя:</label></td>
+                            <td><input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="username" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="hidden" name="password" autocomplete="current-password" required="" id="password" class="form-control" value="1"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="submit" class="btn attention w-100 mb-2">Войти</button>
+            </form>
+
+            <form class="my-3" action="/accounts/login/" method="post">
+                {% csrf_token %}
+                <input id="guest-username" type="hidden" name="username" value="g">
+                <input id="guest-password" type="hidden" name="password" value="g">
+                <button type="submit" class="btn attention-border w-100">Гость</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

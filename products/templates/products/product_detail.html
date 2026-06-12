@@ -1,0 +1,38 @@
+{% extends 'general/base.html' %}
+{% load static %}
+{% load model_filters %}
+
+{% block title %}
+    Товар : {{ object.name }}
+{% endblock %}
+
+{% block h %}
+    Товар : {{ object.name }}
+{% endblock %}
+
+{% block content %}
+<a class="btn attention mb-3" href="{% url 'home' %}">Назад</a>
+
+<div class="container">
+    <table class="table table-bordered">
+        {% for field in form %}
+        <tr>
+            <th style="width: 200px;">{{ field.label }}</th>
+            <td>
+                {% if field.field.widget.input_type == 'file' and field.value %}
+                    {% if field.value.url %}
+                        <img src="{{ field.value.url }}" alt="{{ field.label }}" style="max-width: 200px;">
+                    {% else %}
+                        {{ field.value }}
+                    {% endif %}
+                {% else %}
+                    {{ field.value|default:"—" }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
+

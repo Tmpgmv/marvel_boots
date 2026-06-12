@@ -1,0 +1,12 @@
+# PREP {
+Django==5.2
+django-plaintext-password==0.3.0 # https://pypi.org/project/django-plaintext-password/
+pillow==12.0.0
+django-resized==1.0.3 # https://pypi.org/project/django-resized/
+django-cleanup==9.0.0 # https://pypi.org/project/django-cleanup/
+django-bootstrap-icons==0.9.0 # https://pypi.org/project/django-bootstrap-icons/
+django-jquery==3.1.0 # https://pypi.org/project/django-jquery/
+psycopg2-binary==2.9.11
+django-concurrency==2.7 # https://django-concurrency.readthedocs.io/en/latest/
+selenium==4.40.0
+# } PREP

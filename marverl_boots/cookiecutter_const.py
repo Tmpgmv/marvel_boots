@@ -1,0 +1,8 @@
+# PREP {
+STUDENT_FULL_NAME_RUS = "Граблевский Михаил Владимирович"
+PROJECT_NAME_RUS = "Чудо Обувь"
+PROJECT_DESCRIPTION =  "Сеть магазинов обуви"
+MAIN_BACKGROUND_COLOR = "#FFFFFF"
+AUX_BACKGROUND_COLOR = "#D2F6E7"
+ATTENTION_COLOR = "#70B2AF"
+# } PREP

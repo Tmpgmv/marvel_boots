@@ -1,0 +1,55 @@
+{% load static %} {% comment %} PREP { {% endcomment %}
+{% load bootstrap_icons %}
+
+{% comment %}
+PREP
+
+Применение в шаблоне:
+{% include 'general/search_sort_filter.html' %}
+
+{% endcomment %}
+
+
+{% if user.is_admin or user.is_manager %}
+<style>
+    .filter-form {
+        min-width: 300px;
+        max-width: 400px;
+    }
+
+    .filter-form select,
+    .filter-form input {
+        width: 100%;
+        padding: 5px 8px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .filter-form label {
+        display: block;
+        font-weight: normal;
+        margin-bottom: 0;
+    }
+</style>
+
+<div class="container my-4">
+    <div class="d-flex">
+        <div class="filter-form">
+            <form id="search-sort-filter">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div>
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+            </form>
+        </div>
+        <div class="ms-2">
+            <a href="{% url 'home' %}" class="text-danger">{% bs_icon 'x-circle' %}</a>
+        </div>
+    </div>
+</div>
+{% endif %}

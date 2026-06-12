@@ -1,0 +1,41 @@
+{% extends 'general/base.html' %}
+
+{% comment %}
+PREP
+
+В шаблон с суффиксом confirm_delete добавьте строку:
+
+{% include 'general/confirm_delete.html' %}
+
+{%endcomment%}
+
+{% load bootstrap_icons %}
+
+{% block h %}
+    Удаление
+{% endblock %}
+
+{% block title %}
+    Удаление
+{% endblock %}
+
+{% block content %}
+
+
+<div class=container>
+    <div class="row">
+        <div class="col-12 col-md-1">
+            {% bs_icon 'trash3-fill' color='#dc3545' size='2em' %}
+        </div>
+        <div class="col-12 col-md-11">
+            <form method="post">
+                {% csrf_token %}
+                <p>Удалить "{{ object }}"?</p>
+                {{ form }}
+                <input class="btn btn-primary" type="submit" value="Да">
+                <input class="btn btn-danger" type=button value="Нет" onClick="javascript:history.go(-1);">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
