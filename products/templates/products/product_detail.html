@@ -3,59 +3,35 @@
 {% load model_filters %}
 
 {% block title %}
-    Товар : {{ object.name }}
+Товар : {{ object.name }}
 {% endblock %}
 
 {% block h %}
-    Товар : {{ object.name }}
+Товар : {{ object.name }}
 {% endblock %}
 
 {% block content %}
-<a class="btn attention mb-3" href="{% url 'home' %}">Назад</a>
+<div class="container">
+    <a class="btn attention mb-3" href="{% url 'home' %}">Назад</a>
 
-<div class="row">
-    <div class="col-12">
-        <!-- For desktop: table view -->
-        <div class="d-none d-md-block">
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <tbody>
-                        {% for field in object|get_fields %}
-                        <tr>
-                            <th class="bg-light" style="width: 200px;">{{ field.label }}</th>
-                            <td>
-                                {% if field.is_image and field.value %}
-                                    <img src="{{ field.value.url }}" class="img-fluid" style="max-width: 300px; height: auto;" alt="{{ field.label }}">
-                                {% else %}
-                                    {{ field.value|default:"—"|linebreaks }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- For mobile: card view -->
-        <div class="d-md-none">
-            <div class="card">
+    <div class="row g-3">
+        {% for field in object|get_fields %}
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header bg-light">
+                    <strong>{{ field.label }}</strong>
+                </div>
                 <div class="card-body">
-                    {% for field in object|get_fields %}
-                    <div class="mb-3 pb-2 border-bottom">
-                        <strong class="text-muted d-block mb-1">{{ field.label }}:</strong>
-                        <div>
-                            {% if field.is_image and field.value %}
-                                <img src="{{ field.value.url }}" class="img-fluid" style="max-width: 100%; height: auto;" alt="{{ field.label }}">
-                            {% else %}
-                                {{ field.value|default:"—"|linebreaks }}
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% endfor %}
+                    {% if field.is_image and field.value %}
+                        <img src="{{ field.value.url }}" class="img-fluid rounded"
+                             alt="{{ field.label }}">
+                    {% else %}
+                        {{ field.value|default:"—"|linebreaks }}
+                    {% endif %}
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

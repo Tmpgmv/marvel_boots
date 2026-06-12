@@ -10,6 +10,8 @@ from orders.models import Order
 
 
 class Product(models.Model):
+    exclude_from_detail = ['price']
+
     CATEGOGIES = ["Детская обувь", "Женская обувь", "Мужская обувь", ]
     SUBCATEGORIES = ["Босоножки", "Ботинки", "Кроссовки", "Сапоги", "Туфли", ]
 
@@ -100,6 +102,7 @@ class Product(models.Model):
         ordering = ['category', 'subcategory', 'name']
 
 
+
 class SizeAvailable(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар")
     size = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Размер")
@@ -115,3 +118,4 @@ class SizeEnabled(models.Model):
 
     class Meta:
         ordering = ['product', 'size']
+
