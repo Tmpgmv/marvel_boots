@@ -13,26 +13,49 @@
 {% block content %}
 <a class="btn attention mb-3" href="{% url 'home' %}">Назад</a>
 
-<div class="container">
-    <table class="table table-bordered">
-        {% for field in form %}
-        <tr>
-            <th style="width: 200px;">{{ field.label }}</th>
-            <td>
-                {% if field.field.widget.input_type == 'file' and field.value %}
-                    {% if field.value.url %}
-                        <img src="{{ field.value.url }}" alt="{{ field.label }}" style="max-width: 200px;">
-                    {% else %}
-                        {{ field.value }}
-                    {% endif %}
-                {% else %}
-                    {{ field.value|default:"—" }}
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="row">
+    <div class="col-12">
+        <!-- For desktop: table view -->
+        <div class="d-none d-md-block">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                        {% for field in object|get_fields %}
+                        <tr>
+                            <th class="bg-light" style="width: 200px;">{{ field.label }}</th>
+                            <td>
+                                {% if field.is_image and field.value %}
+                                    <img src="{{ field.value.url }}" class="img-fluid" style="max-width: 300px; height: auto;" alt="{{ field.label }}">
+                                {% else %}
+                                    {{ field.value|default:"—"|linebreaks }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- For mobile: card view -->
+        <div class="d-md-none">
+            <div class="card">
+                <div class="card-body">
+                    {% for field in object|get_fields %}
+                    <div class="mb-3 pb-2 border-bottom">
+                        <strong class="text-muted d-block mb-1">{{ field.label }}:</strong>
+                        <div>
+                            {% if field.is_image and field.value %}
+                                <img src="{{ field.value.url }}" class="img-fluid" style="max-width: 100%; height: auto;" alt="{{ field.label }}">
+                            {% else %}
+                                {{ field.value|default:"—"|linebreaks }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
 {% endblock %}
-
