@@ -83,8 +83,8 @@ class Product(models.Model):
         end_date = datetime(2026, 4, 30, 23, 59, 59)
         number_of_orders_in_april = Order.objects.filter(
             orderproduct__product=self,
-            timestamp__gte=start_date,
-            timestamp__lte=end_date
+            created_at__gte=start_date,
+            created_at__lte=end_date
         ).distinct().count()
 
         result = {"price": self.price, "class": "d-none"}
@@ -94,6 +94,9 @@ class Product(models.Model):
             result["class"] = ""
 
         return result
+
+    def get_size_enabled(self):
+        return self.sizeenabled_set.filter(stock__gt=0).all()
 
     def get_absolute_url(self):
         return reverse_lazy("product-detail", kwargs={"pk": self.pk})
@@ -121,6 +124,9 @@ class SizeEnabled(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар")
     size = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Размер")
     stock = models.PositiveIntegerField(verbose_name="Количество")
+
+    def get_size_and_stock(self):
+        return f"{self.size} - {self.stock} шт."
 
     def __str__(self):
         return str(self.size)

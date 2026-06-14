@@ -1,13 +1,29 @@
 from django.db import models
 
-
-
 # PREP {
 from django.contrib.auth.models import AbstractUser
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
+
+from orders.models import Order
+
 
 class User(AbstractUser):
     patronymic = models.CharField(max_length=300,
                                   verbose_name="Отчество")
+
+    def get_active_order(self):
+        if self.is_client():
+            order, _ = Order.objects.get_or_create(client=self,
+                                                   status="Активный")
+            return order
+        else:
+            raise ValueError("Только клиент может иметь активный заказ")
+
+    def get_active_order_url(self):
+        if self.is_client():
+            order = self.get_active_order()
+            return reverse_lazy("order", kwargs={'pk': order.pk})
 
     def get_full_name(self):
         return super().first_name + " " + self.patronymic + " " + super().last_name
@@ -33,4 +49,3 @@ class User(AbstractUser):
         verbose_name_plural = "Пользователи"
 
 # } PREP
-

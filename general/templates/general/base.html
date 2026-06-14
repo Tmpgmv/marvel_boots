@@ -47,7 +47,7 @@
                 </div>
 
                 {% if user.is_client %}
-                <a href="{% url 'cart' %}" class="btn attention mt-2">{% bs_icon 'cart' %}</a>
+                <a href="{{ user.get_active_order_url }}" class="btn attention mt-2">{% bs_icon 'cart' %}</a>
                 {% endif %}
             </div>
         </div>

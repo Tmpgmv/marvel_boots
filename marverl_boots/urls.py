@@ -24,7 +24,7 @@ from django.conf import settings  # PREP
 from django.conf.urls.static import static  # PREP
 
 from home.views import HomeView
-from orders.views import CartItemCreateView, CartDetailView
+from orders.views import OrderDetailView, OrderProductCreateView
 from products.views import ProductDetailView
 
 urlpatterns = [
@@ -34,8 +34,8 @@ urlpatterns = [
     
     path("admin/", admin.site.urls),
     path("products/<int:pk>/", ProductDetailView.as_view(), name="product-detail"),
-    path("cart/", CartDetailView.as_view(), name="cart"),
-    path("cart-item-create/", CartItemCreateView.as_view(), name="cart-item-create"),
+    path("order/<int:pk>", OrderDetailView.as_view(), name="order"),
+    path("order-product-create/", OrderProductCreateView.as_view(), name="order-product-create"),
 ]
 
 urlpatterns += i18n_patterns(

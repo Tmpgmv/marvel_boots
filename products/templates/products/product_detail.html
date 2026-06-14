@@ -44,8 +44,8 @@
                     <strong>Доступные для заказа размеры</strong>
                 </div>
                 <div class="card-body">
-                    {% for size in object.sizeenabled_set.all %}
-                        <p>{{ size }}</p>
+                    {% for sizeenabled in object.get_size_enabled %}
+                        <p>{{ sizeenabled.get_size_and_stock }}</p>
                     {% endfor %}
                 </div>
             </div>
@@ -53,7 +53,7 @@
 </div>
 
 <div class="container mt-5">
-    {% url 'cart-item-create' as action_url %}
+    {% url 'order-product-create' as action_url %}
     {% include 'general/form_with_confirmation.html' with action=action_url button_text="Добавить в заказ" %}
 
     {% endblock %}

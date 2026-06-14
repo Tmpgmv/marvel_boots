@@ -1,0 +1,27 @@
+{% extends 'general/base.html' %}
+{% load static %}
+
+{% block title %}
+    Корзина
+{% endblock %}
+
+{% block h %}
+    Корзина
+{% endblock %}
+
+{% block content %}
+
+    <a class="btn attention mb-3" href="{% url 'home' %}">Назад</a>
+
+    {% for obj in object.orderproduct_set.all %}
+        {% include 'objects/orderproduct.html' %}
+    {% empty %}
+        <p>Нет товаров</p>
+    {% endfor %}
+
+
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
