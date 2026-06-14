@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 
 from django.views import View
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from orders.models import Order, OrderProduct
 # from orders.forms import CartItemForm
@@ -177,5 +177,9 @@ class OrderProductCreateView(
 #
 #
 #
-class OrderDetailView(DetailView):
+class OrderDetailView(SuccessMessageMixin,
+                      UpdateView):
     model = Order
+    fields = ['status', ]
+    success_message = "Статус заказа изменен"
+    success_url = reverse_lazy('home')

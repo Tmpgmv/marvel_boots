@@ -16,10 +16,12 @@ class Order(models.Model):
     status = models.CharField(max_length=20, choices=choices(STATUS_CHOICES), default='Активный')
 
     def __str__(self):
-        return f"{self.timestamp} - {self.client}"
+        return f"{self.created_at} - {self.client}"
 
     class Meta:
         ordering = ["-created_at"]
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
 
 
 class OrderProduct(models.Model):
@@ -38,5 +40,9 @@ class OrderProduct(models.Model):
     def __str__(self):
         return f"{self.order.client} - {self.product} - {self.size} - {self.amount}"
 
-    def __str__(self):
-        return f"{self.order} - {self.product} - {self.amount}"
+
+
+    class Meta:
+        ordering = ["-order__created_at", ]
+        verbose_name = "Товар в заказе"
+        verbose_name_plural = "Товары в заказах"

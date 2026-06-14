@@ -11,7 +11,9 @@
 
 {% block content %}
 
-    <a class="btn attention mb-3" href="{% url 'home' %}">Назад</a>
+    {% if object.orderproduct_set.all %}
+        {% include 'general/form_with_confirmation.html' with button_text="Сменить статус" %}
+    {% endif %}
 
     {% for obj in object.orderproduct_set.all %}
         {% include 'objects/orderproduct.html' %}

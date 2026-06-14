@@ -49,6 +49,10 @@
                 {% if user.is_client %}
                 <a href="{{ user.get_active_order_url }}" class="btn attention mt-2">{% bs_icon 'cart' %}</a>
                 {% endif %}
+
+                {% if user.is_manager or user.is_admin %}
+                    <a href="/admin" class="btn attention mt-2">{% bs_icon 'tools' %}</a>
+                {% endif %}
             </div>
         </div>
 

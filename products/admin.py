@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from products.models import Product
+
+
+class ProductAdmin(admin.ModelAdmin):
+    search_fields = ['name']  # обязательно для autocomplete_fields
+
+
+admin.site.register(Product, ProductAdmin)
