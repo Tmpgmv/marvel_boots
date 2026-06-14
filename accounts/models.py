@@ -20,7 +20,7 @@ class User(AbstractUser):
         return self.groups.filter(name='Менеджер').exists()
 
     def is_client(self):
-        return self.groups.filter(name='Авторизированный клиент').exists()
+        return self.groups.filter(name__icontains='авторизированный').exists()
 
     def __str__(self):
         return self.get_full_name()

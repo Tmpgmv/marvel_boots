@@ -1,37 +1,64 @@
 {% extends 'general/base.html' %}
 {% load static %}
-{% load model_filters %}
 
 {% block title %}
-Товар : {{ object.name }}
+    Товар : {{ object.pk }}
 {% endblock %}
 
 {% block h %}
-Товар : {{ object.name }}
+    Товар : {{ object.pk }}
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <a class="btn attention mb-3" href="{% url 'home' %}">Назад</a>
+<a class="btn attention mb-3 ms-3" href="{% url 'home' %}">Назад</a>
 
-    <div class="row g-3">
-        {% for field in object|get_fields %}
-        <div class="col-12 col-md-6 col-lg-4">
+{% include 'general/detail.html' %}
+<div class="container">
+        <div class="col-12 mt-3">
             <div class="card h-100">
                 <div class="card-header bg-light">
-                    <strong>{{ field.label }}</strong>
+                    <strong>Цена <span class="badge text-bg-danger {{ object.get_price.discount }}">Скидка</span></strong>
                 </div>
                 <div class="card-body">
-                    {% if field.is_image and field.value %}
-                        <img src="{{ field.value.url }}" class="img-fluid rounded"
-                             alt="{{ field.label }}">
-                    {% else %}
-                        {{ field.value|default:"—"|linebreaks }}
-                    {% endif %}
+                    {{ object.get_price.price }} руб.
                 </div>
             </div>
         </div>
-        {% endfor %}
-    </div>
+
+        <div class="col-12 mt-3">
+            <div class="card h-100">
+                <div class="card-header bg-light">
+                    <strong>Размерный ряд</strong>
+                </div>
+                <div class="card-body">
+                    {% for size in object.sizeavailable_set.all %}
+                        <p>{{ size }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 mt-3">
+            <div class="card h-100">
+                <div class="card-header bg-light">
+                    <strong>Доступные для заказа размеры</strong>
+                </div>
+                <div class="card-body">
+                    {% for size in object.sizeenabled_set.all %}
+                        <p>{{ size }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
 </div>
-{% endblock %}
+
+<div class="container mt-5">
+    {% url 'cart-item-create' as action_url %}
+    {% include 'general/form_with_confirmation.html' with action=action_url button_text="Добавить в заказ" %}
+
+    {% endblock %}
+
+    {% block script %}
+    {% endblock %}
+</div>
+

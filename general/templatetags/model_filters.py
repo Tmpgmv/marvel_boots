@@ -6,7 +6,16 @@ register = template.Library()
 
 @register.filter
 def get_fields(model):
-    """Returns all non-relation fields of a model, checking detail_exclude attribute"""
+    """
+    Returns all non-relation fields of a model, checking detail_exclude attribute
+
+    Применение:
+
+    class Product(models.Model):
+        exclude_from_detail = ['price']
+
+
+    """
     # Проверяем атрибут класса detail_exclude
     exclude_fields = getattr(model.__class__, 'exclude_from_detail', [])
 

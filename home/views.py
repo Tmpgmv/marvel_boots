@@ -26,13 +26,13 @@ class HomeView(ListView):  # PREP
         return context
 
     def get_queryset(self):
-        sort = self.request.GET.get("sort", "more")
+        sort = self.request.GET.get("sort", "Больше")
         search = self.request.GET.get("search", None)
         category = self.request.GET.get("filter", None)
 
         queryset = super().get_queryset()
 
-        if sort == "more":
+        if sort == "Больше":
             queryset = queryset.order_by("-price")
         else:
             queryset = queryset.order_by("price")

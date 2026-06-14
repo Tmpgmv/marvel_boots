@@ -1,0 +1,32 @@
+{% load model_filters %}
+
+{% comment %}
+PREP
+
+Применение в шаблоне:
+{% include 'general/detail.html' %}
+
+{% endcomment %}
+
+<div class="container">
+
+    <div class="row g-3">
+        {% for field in object|get_fields %}
+        <div class="col-12">
+            <div class="card h-100">
+                <div class="card-header bg-light">
+                    <strong>{{ field.label }}</strong>
+                </div>
+                <div class="card-body">
+                    {% if field.is_image and field.value %}
+                        <img src="{{ field.value.url }}" class="img-fluid rounded"
+                             alt="{{ field.label }}">
+                    {% else %}
+                        {{ field.value|default:"—"|linebreaks }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

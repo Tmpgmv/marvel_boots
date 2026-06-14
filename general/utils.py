@@ -1,12 +1,12 @@
-def choices(a_list):
+def choices(iterable):
     """
     PREP
 
     Получает список и на его основе комбинирует
     tuple для атрибута choices поля CharField.
 
-    :param a_list: ["Детская обувь", "Женская обувь", "Мужская обувь", ]
+    :param iterable: ["Детская обувь", "Женская обувь", "Мужская обувь", ]
     :return: (('Детская обувь', 'Детская обувь'), ('Женская обувь', 'Женская обувь'), ('Мужская обувь', 'Мужская обувь'))
     """
 
-    return tuple((x, x) for x in a_list)
+    return tuple((x, x) for x in iterable)

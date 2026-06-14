@@ -1,0 +1,24 @@
+{% extends 'general/base.html' %}
+{% load static %}
+
+{% block title %}
+    Корзина
+{% endblock %}
+
+{% block h %}
+    Корзина
+{% endblock %}
+
+{% block content %}
+
+    <a class="btn attention mb-3" href="{% url 'home' %}">Назад</a>
+
+    {% for object in object_list %}
+        {% include 'objects/cart_item.html' %}
+    {% endfor %}
+
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+

@@ -1,10 +1,15 @@
-{% load static %} {% comment %} PREP { {% endcomment %}
+{% load static %}
 
 {% comment %}
 PREP
 
 Применение в шаблоне:
 {% include 'general/form_with_confirmation.html' %}
+{% include 'general/form_with_confirmation.html' with button_text="Добавить в заказ" %}
+
+{% url 'order-product-create' as action_url %}
+{% include 'general/form_with_confirmation.html' with action=action_url %}
+{% include 'general/form_with_confirmation.html' with action=action_url button_text="Добавить в заказ" %}
 
 {% endcomment %}
 
@@ -15,13 +20,13 @@ PREP
         <link href="{% static 'general/css/bootstrap.min.css'%}" rel="stylesheet">
     </head>
 
-<form id="form-with-confirmation" enctype="multipart/form-data"  method="POST">
+<form id="form-with-confirmation" enctype="multipart/form-data" action="{{ action }}" method="POST">
     {% csrf_token %}
     <table>
     {{form.as_table}}
     </table>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">
-        Сохранить
+    <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#confirmModal">
+        {{ button_text|default:"Сохранить" }}
     </button>
 </form>
 
@@ -35,7 +40,7 @@ PREP
             </div>
             <div class="modal-body text-center">
                 <img src="{% static 'general/img/confirmation.svg' %}" alt="Confirm" class="img-fluid mb-3" style="max-width: 80px;">
-                <p>Сохранить?</p>
+                <p>{{ button_text|default:"Сохранить" }}?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет</button>
@@ -54,5 +59,3 @@ document.getElementById('confirm-btn').addEventListener('click', function() {
 </script>
 
 </html>
-
-{% comment %} } PREP {% endcomment %}

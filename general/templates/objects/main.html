@@ -29,7 +29,7 @@ PREP См. комментарий к two_columns.html.
             {% comment %}<a class="btn del-button position-absolute z-3" href="{{ object.get_delete_url }}">{% bs_icon 'trash' %}</a>{% endcomment %}
         {% endif %}
     </div>
-    {% if user.is_superuser %}
+    {% if user.is_superuser or user.is_client %}
         <a href="{{ object.get_absolute_url }}" class="stretched-link"></a>
     {% endif %}
 </div>
