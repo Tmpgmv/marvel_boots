@@ -17,8 +17,8 @@ class User(AbstractUser):
             order, _ = Order.objects.get_or_create(client=self,
                                                    status="Активный")
             return order
-        else:
-            raise ValueError("Только клиент может иметь активный заказ")
+        # else:
+        #     raise ValueError("Только клиент может иметь активный заказ")
 
     def get_active_order_url(self):
         if self.is_client():

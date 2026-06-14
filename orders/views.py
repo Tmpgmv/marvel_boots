@@ -65,12 +65,13 @@ class OrderProductCreateView(
         product = Product.objects.get(pk=product_id)
 
         try:
+            self.validate_size(size)
             self.validate_amount(product_id, size, amount)
 
             order_product, created = OrderProduct.objects.get_or_create(
                 order=order,
                 product=product,
-                size=size,
+                size_id=size,
                 defaults={'amount': amount,
                           "price": product.get_price_and_class().get("price")}
             )
@@ -82,6 +83,10 @@ class OrderProductCreateView(
             messages.error(request, e.message)
 
         return redirect(product.get_absolute_url())
+
+    def validate_size(self, size):
+        if not size:
+            raise ValidationError("Нельзя заказать товар, не указав размер")
 
     def validate_amount(self, product_id, size, amount):
         # PKGH Проверяем только количество: размеры
@@ -96,8 +101,7 @@ class OrderProductCreateView(
         if amount < 0:
             raise ValidationError("Количество должно быть положительным числом.")
 
-        stock = SizeEnabled.objects.get(product_id=product_id,
-                                        size=size).stock
+        stock = SizeEnabled.objects.get(pk=size).stock
 
         order = self.request.user.get_active_order()
 

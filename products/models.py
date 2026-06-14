@@ -124,15 +124,17 @@ class SizeAvailable(models.Model):
 
 class SizeEnabled(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар")
-    size = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Размер")
+    size_av = models.ForeignKey(SizeAvailable,
+                                on_delete=models.CASCADE,
+                                verbose_name="Размер")
     stock = models.PositiveIntegerField(verbose_name="Количество")
 
     def get_size_and_stock(self):
-        return f"{self.size} - {self.stock} шт."
+        return f"{self.size_av} - {self.stock} шт."
 
     def __str__(self):
-        return str(self.size)
+        return str(self.size_av)
 
     class Meta:
-        ordering = ['product', 'size']
+        ordering = ['product', 'size_av']
 

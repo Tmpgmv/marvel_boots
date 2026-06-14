@@ -11,14 +11,17 @@ class OrderProductForm(forms.Form):
 
         size_enabled = SizeEnabled.objects.filter(product__pk=kwargs["initial"]['product_id'],
                                                   stock__gt=0 ).all()
-        self.fields["size"].choices = choices(size_enabled)
+
+        self.fields["size"].queryset = size_enabled
+
+
 
     product_id = forms.CharField(
         widget=forms.HiddenInput(),
     )
 
-    size = forms.ChoiceField(
-        choices=[],
+    size = forms.ModelChoiceField(
+        queryset=None,
         label="Размер",
     )
 

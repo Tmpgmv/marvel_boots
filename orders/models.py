@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.db import models
 
 from general.utils import choices
@@ -13,10 +14,23 @@ class Order(models.Model):
     client = models.ForeignKey("accounts.User",
                                on_delete=models.CASCADE,
                                verbose_name="Клиент")
-    status = models.CharField(max_length=20, choices=choices(STATUS_CHOICES), default='Активный')
+    status = models.CharField(max_length=20,
+                              choices=choices(STATUS_CHOICES),
+                              default='Активный',
+                              verbose_name="Статус")
+
+    @admin.display(description='Итоговая сумма заказа', ordering='id')
+    def get_total_sum(self):
+        """PKGH Итоговая сумма заказа"""
+        total_sum = 0
+        for order_product in self.orderproduct_set.all():
+            total_sum += order_product.amount * order_product.product.get_price_and_class().get("price")
+
+        return f"{total_sum} руб."
 
     def __str__(self):
-        return f"{self.created_at} - {self.client}"
+        return f"{self.created_at} - {self.client} - итого по заказу: {self.get_total_sum()}"
+
 
     class Meta:
         ordering = ["-created_at"]
@@ -31,16 +45,15 @@ class OrderProduct(models.Model):
     product = models.ForeignKey("products.Product",
                                 on_delete=models.CASCADE,
                                 verbose_name="Товар")
-    size = models.DecimalField(max_digits=10,
-                               decimal_places=2,
-                               verbose_name="Размер")
-    amount = models.PositiveIntegerField(verbose_name="Количество") # PKGH Очень важно, чтобы по умолчанию было значение. Потому что будем полагаться на get_or_create с выборкой не по количеству.
+    size = models.ForeignKey("products.SizeEnabled",
+                             on_delete=models.CASCADE,
+                             verbose_name="Размер")
+    amount = models.PositiveIntegerField(
+        verbose_name="Количество")  # PKGH Очень важно, чтобы по умолчанию было значение. Потому что будем полагаться на get_or_create с выборкой не по количеству.
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена")
 
     def __str__(self):
-        return f"{self.order.client} - {self.product} - {self.size} - {self.amount}"
-
-
+        return f"{self.order.client}: {self.product} - размер {self.size} - {self.amount} шт."
 
     class Meta:
         ordering = ["-order__created_at", ]
