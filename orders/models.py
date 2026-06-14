@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.core.exceptions import ValidationError
 from django.db import models
 
 from general.utils import choices
@@ -38,6 +39,7 @@ class Order(models.Model):
         verbose_name_plural = 'Заказы'
 
 
+
 class OrderProduct(models.Model):
     order = models.ForeignKey(Order,
                               on_delete=models.CASCADE,
@@ -54,6 +56,11 @@ class OrderProduct(models.Model):
 
     def __str__(self):
         return f"{self.order.client}: {self.product} - размер {self.size} - {self.amount} шт."
+
+    def clean(self):
+        if self.product != self.size.product:
+            raise ValidationError("Размер надо выбирать только соответствюущий данному товару.")
+        pass
 
     class Meta:
         ordering = ["-order__created_at", ]

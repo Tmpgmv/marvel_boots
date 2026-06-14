@@ -133,7 +133,7 @@ class SizeEnabled(models.Model):
         return f"{self.size_av} - {self.stock} шт."
 
     def __str__(self):
-        return str(self.size_av)
+        return f"{self.product} - {self.size_av}"
 
     class Meta:
         ordering = ['product', 'size_av']
