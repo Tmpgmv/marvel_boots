@@ -128,6 +128,7 @@ class SizeEnabled(models.Model):
                                 on_delete=models.CASCADE,
                                 verbose_name="Размер")
     stock = models.PositiveIntegerField(verbose_name="Количество")
+    initial_stock = models.PositiveIntegerField(verbose_name="Начальное количество", default=0)
 
     def get_size_and_stock(self):
         return f"{self.size_av} - {self.stock} шт."

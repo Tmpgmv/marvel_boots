@@ -3,6 +3,11 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 from general.utils import choices
+from orders.utils import recalc_all_stock
+
+
+
+
 
 
 class Order(models.Model):
@@ -20,6 +25,7 @@ class Order(models.Model):
                               default='Активный',
                               verbose_name="Статус")
 
+
     @admin.display(description='Итоговая сумма заказа', ordering='id')
     def get_total_sum(self):
         """PKGH Итоговая сумма заказа"""
@@ -32,6 +38,13 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.created_at} - {self.client} - итого по заказу: {self.get_total_sum()}"
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        recalc_all_stock()  # после сохранения заказа пересчитываем всё
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        recalc_all_stock()  # При удалении товарной позиции
 
     class Meta:
         ordering = ["-created_at"]
@@ -62,7 +75,19 @@ class OrderProduct(models.Model):
             raise ValidationError("Размер надо выбирать только соответствюущий данному товару.")
         pass
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        recalc_all_stock()  # после сохранения товара пересчитываем всё
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        recalc_all_stock()  # после удаления товара пересчитываем всё
+
     class Meta:
         ordering = ["-order__created_at", ]
         verbose_name = "Товар в заказе"
         verbose_name_plural = "Товары в заказах"
+
+
+
+
